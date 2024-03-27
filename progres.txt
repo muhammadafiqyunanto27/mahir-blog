@@ -1,0 +1,3 @@
+1. senin , 4 maret 2024 - hari inisampai halaman register, login , dashboard sudah bisa terintegrasi dengan baik tanpa bug
+
+2. selasa , 5 maret 2024 - hari ini sampai ke halaman membuat article , masih belum bisa mengisi article dengan baik dan benar

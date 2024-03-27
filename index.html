@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/index.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="navbar">
+            <div class="container">
+                <h2>Mahir Blog</h2>
+                <div class="navigasi" id="navigasi">
+
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="container">
+                <div class="content-area" id="content-area">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const contentArea = document.getElementById("content-area")
+            const articles = getArticleFromLocalStorage()
+
+            articles.forEach((article, index) => {
+                console.log(index)
+                console.log(article)
+
+                const div = document.createElement("div")
+                div.classList = "card"
+                div.innerHTML = `
+                <h2>Judul: ${article.title}</h2>
+                <p> ${article.article} </p>
+                <p><span>Penulis: ${article.author}</span> | <span>Tanggal: ${article.date}</span></p>
+                `
+                contentArea.append(div)
+            })
+
+            const navigasi = document.getElementById("navigasi")
+
+            const login = document.createElement("button")
+            login.classList = "login"
+            login.innerText = "Login"
+            login.addEventListener("click", () => {
+                window.location.href = "./auth/login.html"
+            })
+
+            const register = document.createElement("button")
+            register.classList = "register"
+            register.innerText = "Daftar gratis"
+            register.addEventListener("click", () => {
+                window.location.href = "./auth/register.html"
+            })
+
+            const dashboard = document.createElement("button")
+            dashboard.classList = "dashboard"
+            dashboard.innerText = "Dashboard"
+            dashboard.addEventListener("click", () => {
+                window.location.href = "./admin/dashboard.html"
+            })
+
+            const userSession = getSessionFromLocalStorage()
+
+            userSession ? navigasi.append(dashboard) : navigasi.append(login, register)
+        })
+
+        function getArticleFromLocalStorage() {
+            const articlesJSON = localStorage.getItem("articles")
+            return articlesJSON ? JSON.parse(articlesJSON) : []
+        }
+
+        function getSessionFromLocalStorage() {
+            const sessionJSON = localStorage.getItem("session")
+            return sessionJSON ? JSON.parse(sessionJSON) : null
+        }
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

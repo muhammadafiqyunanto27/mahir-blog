@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+* {
+    font-family: "Roboto", sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-blue: #407bff;
+}
+
+.navbar {
+    background-color: var(--primary-blue);
+    color: #fefefe;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container {
+    padding: 0px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.navigasi .login {
+    background-color: white;
+    color: var(--primary-blue);
+    padding: 8px 13px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.navigasi .login a {
+    text-decoration: none;
+}
+.navigasi {
+    display: flex;
+    gap: 10px;
+}
+
+.navigasi .dashboard {
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #407bff;
+    color: #fefefe;
+}
+
+.navigasi .register a {
+    text-decoration: none;
+}
+
+.navigasi .register {
+    background-color: #ffb325;
+    color: var(--primary-blue);
+    padding: 8px 13px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+
+/* Content */
+.content {
+    margin-top: 20px;
+}
+
+.card {
+    width: 100%;
+}
+
+.content-area {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    row-gap: 10px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 0px 90px;
+    }
+
+    .content-area {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

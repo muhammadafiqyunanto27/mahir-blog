@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page - Mahir Blog</title>
+    <link rel="stylesheet" href="/styles/login.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+
+</head>
+
+
+
+
+<body>
+    <div class="container">
+        <div class="wrap-form" data-aos="zoom-in" data-aos-duration="1400">
+            <a href="/index.html" class="logo">
+                <h1>Mahir Blog</h1>
+            </a>
+            <div>
+                <h3>Login into your Account</h3>
+                <form class="loginform" id="authForm">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Masukan Email">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Masukan Password">
+                    <input type="submit" value="Login">
+                </form>
+                <span class="register">Belum punya Account? <a href="/auth/register.html">Register</a></span>
+            </div>
+        </div>
+        <div class="wrapp-image" data-aos="zoom-in-up" data-aos-duration="1400">
+            <img src="../assets/Tablet login-amico.svg" alt="login-image">
+        </div>
+    </div>
+    <script>
+        AOS.init();
+
+        const authForm = document.getElementById("authForm");
+        authForm.addEventListener("submit", (event) => { 
+            event.preventDefault();
+
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (email === "" || password === "") {
+                alert("Email dan Password tidak boleh kosong!");
+                return;
+            }
+
+            const students = ambilStudentsDariLocalStorage();
+
+            const authStudents = students.find((student) => student.email === email && student.password === password);
+
+            if (authStudents) {
+                window.location.href = "../admin/dashboard.html";
+                createSession(authStudents);
+                alert("Login succesfully");
+            } else {
+                alert("Email atau Password tidak sesuai");
+            }
+
+            document.forms["authForm"].reset();
+        });
+
+        function ambilStudentsDariLocalStorage() {
+            const studentsJSON = localStorage.getItem("students");
+            return studentsJSON ? JSON.parse(studentsJSON) : [];
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const students = ambilStudentsDariLocalStorage();
+            const defaultStudent = {
+                email: "admin@gmail.com",
+                password: "admin",
+            };
+
+            // cek apakah status student sudah login atau belum
+            const sessionStudent = dapatkanSessionStudentFromLocalStorage();
+            if (sessionStudent) {
+                window.location.href = "../admin/dashboard.html";
+            }
+
+            const cekDefaultUser = students.some((student) => student.email === defaultStudent.email);
+
+            if(!cekDefaultUser) {
+                students.push(defaultStudent);
+            }
+
+            simpanStudentsKeLocalStorage(students);
+        });
+
+        function simpanStudentsKeLocalStorage(arg) {
+            localStorage.setItem("students", JSON.stringify(arg));
+        }
+       
+        function createSession(arg) {
+            localStorage.setItem("session", JSON.stringify({email: arg.email}));
+        };
+
+        function dapatkanSessionStudentFromLocalStorage() {
+            const sessionJSON = localStorage.getItem("session");
+            return sessionJSON ? JSON.parse(sessionJSON) : null;
+        };
+    </script>
+   
+</body>
+
+</html>

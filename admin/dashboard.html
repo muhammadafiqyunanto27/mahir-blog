@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Mahir Blog</title>
+    <link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+
+<body>
+    <div id="sidebar">
+        <h2><a href="../index.html">Mahir Blog</a></h2>
+        <a href="../admin/dashboard.html">Beranda</a>
+        <a href="../admin/add-article.html">Tulis Artikel</a>
+        <a href="">Pengaturan</a>
+        <a href="" id="btn-logout" onclick="logoutFunction()">Logout</a>
+    </div>
+    <div id="content">
+        <div id="navbar">
+            <div onclick="toggleSidebar()" class="toggle-btn">&#9776</div>
+            <div class="right">
+                <input type="text" id="search" name="search" placeholder="cari">
+                <button class="logout-btn" onclick="logoutFunction()">Logout</button>
+            </div>
+
+        </div>
+        <div class="content-dashboard">
+            <h1>Selamat Datang di Dashboard</h1>
+            <div class="modal" id="editModal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h1>Edit Artikel</h1>
+                    <form class="articleForm" id="editForm">
+                        <label for="judul">Masukan Judul</label>
+                        <input type="text" name="judul" id="judul">
+                        <label for="penulis">Penulis</label>
+                        <input type="text" id="penulis" name="penulis">
+                        <label for="tanggal">Tanggal</label>
+                        <input type="date" id="tanggal" name="tanggal">
+                        <label for="article">Tulis Artikel</label>
+                        <textarea name="" id="article" name="article" cols="30" rows="10"></textarea>
+
+                        <button type="submit" onclick="saveEditedArticle()">Update Artikel</button>
+                    </form>
+                    
+                </div>
+                
+
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Judul</th>
+                        <th>Artikel</th>
+                        <th>Penulis</th>
+                        <th>Tanggal Terbit</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        const modal = document.getElementById("editModal")
+        let editedIndex = -1
+
+        function closeModal() {
+            modal.style.display = "none"
+        }
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const articles = getarticleFromlocalStiorage()
+            const tbody = document.getElementById("tbody")
+
+            articles.forEach((article, index) => {
+                const tr = document.createElement("tr")
+                tr.innerHTML = `
+                <td>${article.title}</td>
+                <td>${article.article}</td>
+                <td>${article.date}</td>
+                <td>${article.author}</td>
+                <td>
+                    <button onclick="editArticle(${index})">Edit</button>
+                    <button onclick="deleteArticle(${index})">Delete</button>
+                    </td>
+                    `
+
+                tbody.append(tr)
+            })
+
+        })
+
+
+        function saveEditedArticle(index) {
+
+            // alert("test")
+
+            const titleInput = document.getElementById("judul")
+            const authorInput = document.getElementById("penulis")
+            const dateInput = document.getElementById("tanggal")
+            const articleInput = document.getElementById("article")
+
+            const editedTitle = titleInput.value.trim()
+            const editedAuthor = authorInput.value.trim()
+            const editedDate = dateInput.value.trim()
+            const editedArticle = articleInput.value.trim()
+
+            if (
+                editedTitle === "" ||
+                editedAuthor === "" ||
+                editedDate === "" ||
+                editedArticle === ""
+            ) {
+                alert("inputan Tidak Boleh Kosong")
+            } else {
+                const articles = getarticleFromlocalStiorage()
+                articles[editedIndex] = {
+                    title: editedTitle,
+                    author: editedAuthor,
+                    date: editedDate,
+                    article: editedArticle
+                }
+                saveArticleToLocalStorage(articles)
+                alert("Artikel Berhasil Di Edit")
+
+            }
+        }
+
+        function editArticle(index) {
+
+            modal.style.display = "block"
+
+            const articles = getarticleFromlocalStiorage()
+
+            editedIndex = index
+            const editedArticle = articles[editedIndex]
+
+            document.getElementById("judul").value = editedArticle.title
+            document.getElementById("penulis").value = editedArticle.author
+            document.getElementById("tanggal").value = editedArticle.date
+            document.getElementById("article").value = editedArticle.article
+        }
+
+        function deleteArticle(index) {
+            const articles = getarticleFromlocalStiorage()
+
+            if (confirm("Apakah anda ingin menghapus data?")) {
+                articles.splice(index, 1)
+                alert('Anda telah menghapus data')
+            } else {
+                alert("Data tidak jadi di hapus")
+            }
+
+            
+            saveArticleToLocalStorage(articles)
+        }
+
+        function saveArticleToLocalStorage(arg) {
+            localStorage.setItem("articles", JSON.stringify(arg))
+        }
+
+        function getarticleFromlocalStiorage() {
+            const articlesJSON = localStorage.getItem("articles")
+            return articlesJSON ? JSON.parse(articlesJSON) : []
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar")
+            const content = document.getElementById("content")
+
+            if (sidebar.style.width === "250px") {
+                sidebar.style.width = "0px"
+                sidebar.style.display = "none"
+                content.style.marginLeft = "0px"
+            } else {
+                sidebar.style.width = "250px"
+                sidebar.style.display = "block"
+                content.style.marginLeft = "250px"
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const sessionStudents = dapatkanSessionDariLocalStorage()
+            console.log(sessionStudents)
+
+            if (!sessionStudents) {
+                window.location.href = "../auth/login.html"
+            }
+        })
+
+        function logoutFunction() {
+            
+            if (confirm("Apakah anda yakin ingin Logout?")) {
+                localStorage.removeItem("session")
+                window.location.href = '../auth/login.html'
+                alert("Logout Succesfully")
+            } else {
+                alert("Anda Tidak jadi Logout")
+            }
+
+
+        }
+
+        function dapatkanSessionDariLocalStorage() {
+            const sessionJSON = localStorage.getItem("session")
+            return sessionJSON ? JSON.parse(sessionJSON) : null
+        }
+
+
+
+    </script>
+</body>
+
+</html>
